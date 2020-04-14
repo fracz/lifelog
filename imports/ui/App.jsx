@@ -23,7 +23,7 @@ class App extends Component {
                     {this.renderLogs()}
                 </ul>
 
-                <NewLogButton onSubmit={(e) => this.props.logs.push(e)}/>
+                <NewLogButton onSubmit={(e) => LogsCollection.insert(e)}/>
             </div>
         );
     }
