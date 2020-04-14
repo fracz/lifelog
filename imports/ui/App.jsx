@@ -3,6 +3,7 @@ import {withTracker} from 'meteor/react-meteor-data';
 
 import {LogsCollection} from '../api/logs.js';
 import LogLink from "./LogLink";
+import NewLogButton from "./NewLogButton";
 
 class App extends Component {
     renderLogs() {
@@ -21,6 +22,8 @@ class App extends Component {
                 <ul>
                     {this.renderLogs()}
                 </ul>
+
+                <NewLogButton onSubmit={(e) => this.props.logs.push(e)}/>
             </div>
         );
     }
