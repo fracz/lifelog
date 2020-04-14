@@ -4,6 +4,7 @@ import {withTracker} from 'meteor/react-meteor-data';
 import {LogsCollection} from '../api/logs.js';
 import LogLink from "./LogLink";
 import NewLogButton from "./NewLogButton";
+import AccountsUiWrapper from "./AccountsUiWrapper";
 
 class App extends Component {
     renderLogs() {
@@ -19,11 +20,23 @@ class App extends Component {
                     <h1>LifeLog</h1>
                 </header>
 
-                <ul>
-                    {this.renderLogs()}
-                </ul>
+                <AccountsUiWrapper/>
 
-                <NewLogButton onSubmit={(e) => LogsCollection.insert(e)}/>
+                {
+                    this.props.currentUser &&
+                    <div>
+                        <ul>
+                            {this.renderLogs()}
+                        </ul>
+
+                        <NewLogButton
+                            onSubmit={(e) => LogsCollection.insert({
+                                ...e,
+                                owner: Meteor.userId(),
+                                createdAt: new Date()
+                            })}/>
+                    </div>
+                }
             </div>
         );
     }
@@ -32,5 +45,6 @@ class App extends Component {
 export default withTracker(() => {
     return {
         logs: LogsCollection.find({}).fetch(),
+        currentUser: Meteor.user(),
     };
 })(App);
