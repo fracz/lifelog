@@ -30,11 +30,7 @@ class App extends Component {
                         </ul>
 
                         <NewLogButton
-                            onSubmit={(e) => LogsCollection.insert({
-                                ...e,
-                                owner: Meteor.userId(),
-                                createdAt: new Date()
-                            })}/>
+                            onSubmit={(e) => Meteor.call('logs.insert', e.label)}/>
                     </div>
                 }
             </div>
@@ -43,6 +39,8 @@ class App extends Component {
 }
 
 export default withTracker(() => {
+    Meteor.subscribe('logs');
+
     return {
         logs: LogsCollection.find({}).fetch(),
         currentUser: Meteor.user(),
